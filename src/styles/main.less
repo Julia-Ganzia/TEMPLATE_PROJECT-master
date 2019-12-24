@@ -1,60 +1,171 @@
-/*
-Write all less code in this file
-Import another styles from less files using @import "[NAME_OF_FILE].less"
-*/
-// Example styles
-@font-face {
-  font-family: "christmas";
-  src: url("../fonts/christmaseve.ttf");
+@bgColor: #16a086;
+@headerColor: #ffffff;
+@textColor: #5b5b5b;
+@size: 15px;
+@family: "Lato", sans-serif;
+@imgf1: url(../images/f.png);
+@imgf2: url(../images/twitter.png);
+@imgf3: url(../images/g+.png);
+@imgf4: url(../images/bol.png);
+@display: grid;
+@overf: none;
+
+.nav(@display) {
+  display: @display;
+  grid-template-rows: 100%;
+  grid-template-columns: repeat(4, 25%);
+  background: transparent;
+  opacity: 0.7;
+  width: 180px;
+  height: 43px;
+  position: absolute;
+  left: 10%;
+  top: 23%;
+}
+.span() {
+  background-color: @bgColor;
+  opacity: 0.9;
+  padding: 18% 22%;
 }
 
-@bgColor: grey;
-@headerColor: #373333;
+.imgSpan(@imgf1) {
+  content: @imgf1;
+}
 
-@size: 40px;
-@family: "christmas";
-
-.baseBodyStyles() {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  margin: 0;
+.baseBodyStyles(@overf) {
+  height: 636px;
+  width: 100%;
+  overflow: @overf;
+  margin-top: 5%;
   padding: 0;
 }
 
-.flex(@direction) {
+.flex(@direction,@just) {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: @just;
   flex-direction: @direction;
 }
 
-body {
-  .flex(column);
-  .baseBodyStyles();
-  background: @bgColor;
-
-  & > * {
-    font-size: @size;
-  }
-  & img {
-    border: 0.5px solid rgba(0, 0, 0, 0.5);
-    height: 250px;
-    width: 500px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 21px 30px #5c5656;
-  }
-
-  & h1 {
-    .flex(row);
-    font-family: @family;
-    color: @headerColor;
-  }
+.grid(@display,@rows,@colums) {
+  display: @display;
+  grid-template-rows: repeat(@rows, 420px);
+  grid-template-columns: repeat(@colums, auto);
+  grid-gap: 25px;
 }
 
-.main_body {
-  &_text {
-    font-size: 35px;
-    font-family: @family;
+.sizeDiv(@w;@h) {
+  width: @w;
+  height: @h;
+}
+
+.textPosition(@position) {
+  text-align: @position;
+}
+.text(@size,@family) {
+  font-size: @size;
+  font-family: @family;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(7deg);
+  }
+  50% {
+    transform: rotate(-7deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+body {
+  .flex(column, center);
+  .baseBodyStyles(hidden);
+  background: @bgColor;
+  color: @headerColor;
+  .text(@size, @family);
+
+  h1 {
+    margin-bottom: 0;
+    font-weight: lighter;
+  }
+  p {
+    .textPosition(center);
+  }
+  div {
+    .flex(row, space-around);
+    .sizeDiv(65%, 420px);
+    margin: 15px 25px;
+  }
+  @media screen and (min-width: 468px) and (max-width: 768px) {
+    .baseBodyStyles(visible);
+    div {
+      .grid(grid, 2, 2);
+      grid-template-areas:
+        ". ."
+        "figure-3 figure-3";
+    }
+    .figure-3 {
+      grid-area: figure-3;
+      left: 25%;
+    }
+  }
+  @media screen and (max-width: 468px) {
+    .baseBodyStyles(visible);
+    div {
+      .grid(inline-grid, 3, 1);
+    }
+  }
+
+  figure {
+    .sizeDiv(221px, 100%);
+    background: @headerColor;
+    position: relative;
+  }
+  img {
+    .sizeDiv(221px, 229px);
+    cursor: pointer;
+  }
+  nav {
+    .nav(none);
+    span {
+      .span();
+    }
+
+    span:nth-of-type(1)::after {
+      .imgSpan(@imgf1);
+      margin-left: 25%;
+    }
+    span:nth-of-type(2)::after {
+      .imgSpan(@imgf2);
+    }
+    span:nth-of-type(3)::after {
+      .imgSpan(@imgf3);
+    }
+    span:nth-of-type(4)::after {
+      .imgSpan(@imgf4);
+    }
+  }
+  img:hover + nav,
+  nav:hover {
+    .nav(grid);
+  }
+  nav span:hover {
+    animation: rotate 0.15s ease 5;
+  }
+
+  figcaption {
+    .textPosition(center);
+    color: @textColor;
+    h3 {
+      margin-bottom: 0;
+    }
+    p {
+      padding: 8px;
+      .textPosition(left);
+    }
+
+    p::after {
+      content: "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit loboetis nisl ut aliquip ex ea commodo consequat.";
+    }
   }
 }
